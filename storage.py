@@ -25,6 +25,12 @@ def open_series():
     """returns dataframe object of series table"""
     return pd.read_csv("data/series.csv",names=["series_name","channel_name"],sep=";",header=0)
 
+def close_series(df):
+    df.drop_duplicates().to_csv("data/series.csv",sep=";",header=["series_name","channel_name"],index=False)
+
+def close_nel(df):
+    df.drop_duplicates().to_csv("data/new_episodes_list.csv",sep=";",header=["episode_name","url"],index=False)
+
 def get_series_aslist():
     return open_series()["series_name"].tolist()
 
@@ -47,8 +53,29 @@ def add_series(series_name,channel_name):
     ser.write(series_name + ";" + channel_name + "\n")
     ser.close()
 
+def remove_series(series_name,channel_name):
+    ser = open_series()
+    series_match = ser["series_name"] == series_name
+    channel_match = ser["channel_name"] == channel_name
+    print(series_match)
+    print(channel_match)
+    ser = ser[[not a for a in list(map(all,zip(*[series_match,channel_match])))]]
+    close_series(ser)
+
 init_database()
-add_series("tester","chan")
-add_series("tester","chan")
-print(open_series())
+
+"""
+add_series("temp1","temp2")
+add_series("temp1","temp3")
+add_series("temp1","temp9")
+remove_series("temp1" ,"temp3")
+"""
+
+""""
+temp = open_series()
+print(temp)
+df = pd.DataFrame({'channel_name': ['Raphael', 'Donatello'],'series_name': ['red', 'purple']})
+print(df)
+close_series(df)
+"""
 
