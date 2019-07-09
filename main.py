@@ -19,6 +19,8 @@ def init_argument_parser():
     parser.add_argument("-s","--series",const="series",help="specify series to work on",nargs="?",default="")
     parser.add_argument("-c","--channel",const="channel",help="specify channel to work on",nargs="?",default="")
     parser.add_argument("--initDB",action="store_const",const=st.init_database,dest="initDB",help="initial init of database. does nothing later")
+    parser.add_argument("--add-series",action="store_const",const=st.add_series,dest="add_series",help="adds series-channel pair to database, requires both to be specified")
+    parser.add_argument("--remove-series",action="store_const",const=st.remove_series,dest="remove_series",help="removes series-channel pair to database, requires both to be specified")
     args = parser.parse_args()
     print(args)
 
@@ -27,6 +29,8 @@ def init_argument_parser():
         if (callable(value)):
             if (key == "fetch"):
                 value(args.channel,args.series)
+            elif (key == "add_series" or key == "remove_series"):
+                value(args.series,args.channel)
             else:
                 value()
 

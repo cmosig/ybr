@@ -2,20 +2,50 @@ import urllib.request
 from bs4 import BeautifulSoup
 import re
 import pandas as pd
+import storage as st
 
 
 def fetch_latest_videotitles(channel_name="",series_regex=""):
-    """returns latest videos from channel optionally filtering for series"""
     base_url = "https://www.youtube.com/user/<channel>/videos"
+    
+    if (channel_name == ""):
+        #check entire series list
+        to_fetch = st.get_series_asdict()
+    elif (series_regex == ""):
+        #check only of specific channel
+        #TODO
+        print("TODO")
+    else:
+        #check channel - series pair
+        to_fetch = { series_regex : channel_name }
 
-    #TODO check all default
+    for s_name,c_name in to_fetch.items():
 
-    url = base_url.replace("<channel>",channel_name)
-    channel_bs = BeautifulSoup(urllib.request.urlopen(url),"html.parser")
-    video_elements = channel_bs.findAll("a", {"class":"yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2"})
-    video_titles = pd.Series(list(map(get_title,video_elements)))
-    titles = video_titles[video_titles.apply(match_regex,args=(series_regex,))].tolist()
-    return titles
+        #fetch latest episodes
+        url = base_url.replace("<channel>",c_name)
+        channel_bs = BeautifulSoup(urllib.request.urlopen(url),"html.parser")
+        video_elements = channel_bs.findAll("a", {"class":"yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2"})
+        video_titles = pd.Series(list(map(get_title,video_elements)))
+        titles = video_titles[video_titles.apply(match_regex,args=(s_name,))].tolist()
+
+        #find the latest episode for a given series-channel pair check if there are new episodes    
+        current_latest = st.get_latest_episode_name(s_name,c_name)
+
+        if (len(titles) == 0):
+            continue
+        for i in range(len(titles)):
+            if(current_latest == ""):
+                st.add_new_episode(titles[0])
+                st.set_latest(titles[i],s_name,c_name)
+                break
+            if(titles[i] == current_latest):
+                if (i>0):
+                    st.set_latest(titles[i-1],s_name,c_name)
+                break
+            else:
+                #TODO also add URL
+                st.add_new_episode(titles[i])
+    
 
 def get_title(element):
     return element.get("title")
