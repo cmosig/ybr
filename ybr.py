@@ -34,6 +34,3 @@ def init_argument_parser():
                 value(int(args.nel_index))
             else:
                 value()
-
-    
-main()
