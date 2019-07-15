@@ -33,17 +33,17 @@ def fetch_latest_videotitles(channel_name="",series_regex=""):
 
         if (len(titles) == 0):
             continue
+        if(current_latest == "" or titles[0] != current_latest):
+            st.set_latest(titles[0],s_name,c_name)
         for i in range(len(titles)):
+            #TODO also add URL
+            #going through all found titles matching the given series-channel pair
             if(current_latest == ""):
                 st.add_new_episode(titles[0])
-                st.set_latest(titles[i],s_name,c_name)
                 break
             if(titles[i] == current_latest):
-                if (i>0):
-                    st.set_latest(titles[i-1],s_name,c_name)
                 break
             else:
-                #TODO also add URL
                 st.add_new_episode(titles[i])
     
 

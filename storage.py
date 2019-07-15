@@ -36,14 +36,16 @@ def get_series_aslist():
     return open_series()["series_name"].tolist()
 """
 
+def remove_nel(index):
+    nel = open_nel()
+    nel = nel.drop([index])
+    close_nel(nel)
+
 def set_latest(latest,series,channel):
-    #TODO
+    """sets the latest episode of a series-channel pair"""
     ser = open_series()
-    series_match = ser["series_name"] == series
-    channel_match = ser["channel_name"] == channel
-    b = list(map(all,zip(*[series_match,channel_match])))
-    ser.loc[b] = { "series_name" :  series , "channel_name" : channel , "latest_watched" : latest }
-    print(ser)
+    #locating channel-series pair in dataframe and replacing latest watched episode
+    ser.loc[(ser["series_name"]==series) & (ser["channel_name"]==channel),"latest_watched"] = latest
     close_series(ser)
     
 
@@ -55,7 +57,6 @@ def get_latest_episode_name(series,channel):
     if (pd.isna(latest[0])):
         return ""
     else:
-        print(latest)
         return latest[0]
 
 def add_new_episode(episode_name,url=""):
