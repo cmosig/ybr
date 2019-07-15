@@ -1,35 +1,38 @@
 import os
+import traceback
 from os import path
 import pandas as pd
+
+data_path = "/home/hacker101/projects/ybr/data/"
 
 def init_database():
     try:
         os.mkdir("./data")
     except:
         pass
-    if (path.exists("data/new_episodes_list.csv") and path.exists("data/series.csv")):
+    if (path.exists(data_path + "new_episodes_list.csv") and path.exists(data_path + "series.csv")):
         print("database files already exist")
     else:
-        f = open("data/new_episodes_list.csv","w+")
+        f = open(data_path + "new_episodes_list.csv","w+")
         f.write("episode_name ; url \n")
         f.close
-        h = open("data/series.csv","w+")
+        h = open(data_path + "series.csv","w+")
         h.write("series_name ; channel_name ; latest_watched\n")
         h.close
 
 def open_nel():
     """returns dataframe object of new episodes list table"""
-    return pd.read_csv("data/new_episodes_list.csv",names=["episode_name","url"],sep=";",header=0)
+    return pd.read_csv(data_path + "new_episodes_list.csv",names=["episode_name","url"],sep=";",header=0)
 
 def open_series():
     """returns dataframe object of series table"""
-    return pd.read_csv("data/series.csv",names=["series_name","channel_name","latest_watched"],sep=";",header=0)
+    return pd.read_csv(data_path + "series.csv",names=["series_name","channel_name","latest_watched"],sep=";",header=0)
 
 def close_series(df):
-    df.drop_duplicates().to_csv("data/series.csv",sep=";",header=["series_name","channel_name","latest_watched"],index=False)
+    df.drop_duplicates().to_csv(data_path + "series.csv",sep=";",header=["series_name","channel_name","latest_watched"],index=False)
 
 def close_nel(df):
-    df.drop_duplicates().to_csv("data/new_episodes_list.csv",sep=";",header=["episode_name","url"],index=False)
+    df.drop_duplicates().to_csv(data_path + "new_episodes_list.csv",sep=";",header=["episode_name","url"],index=False)
 
 """
 def get_series_aslist():
@@ -61,9 +64,10 @@ def get_latest_episode_name(series,channel):
 
 def add_new_episode(episode_name,url=""):
     try:
-        nel = open("data/new_episodes_list.csv","a")
+        nel = open(data_path + "new_episodes_list.csv","a")
     except:
         print("Database inconsisent. Did you initialize it yet. consider --initDB")
+        traceback.print_exc()
     nel.write(episode_name + ";" + url + "\n")
     nel.close()
 
@@ -82,9 +86,10 @@ def get_nel_asdict():
 
 def add_series(series_name,channel_name):
     try: 
-        ser = open("data/series.csv","a")
+        ser = open(data_path + "series.csv","a")
     except:
         print("Database inconsisent. Did you initialize it yet. consider --initDB")
+        traceback.print_exc()
     ser.write(series_name + ";" + channel_name + ";" "\n")
     ser.close()
 
