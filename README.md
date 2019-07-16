@@ -11,7 +11,7 @@ git clone and run setup.py
 ## Usage
 After installation run: _ybr --initDB_
 This will initialize the database. After this function has been called once, it has no further effect when called again.
-Provide channelname and a regex matching the videos titles you want to watch using: _ybr --add-series -s regey -c channel_
+Provide channelname and a regex matching the videos titles you want to watch using: _ybr --add-series -s regex -c channel_
 Fetch the series using _ybr -f_ and display results using _ybr -p_. You can remove watched titles by index using _ybr -rn int_
 Read _ybr -h_ for other functions.
 
