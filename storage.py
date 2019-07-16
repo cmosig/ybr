@@ -7,7 +7,7 @@ data_path = "/home/hacker101/projects/ybr/data/"
 
 def init_database():
     try:
-        os.mkdir("./data")
+        os.mkdir(data_path)
     except:
         pass
     if (path.exists(data_path + "new_episodes_list.csv") and path.exists(data_path + "series.csv")):
