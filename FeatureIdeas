@@ -1,0 +1,2 @@
+- Add whole channel, but blacklisting specific titles (regex).
+- Setup channel cache, so no channel is fetched twice
