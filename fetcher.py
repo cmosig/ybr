@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import pandas as pd
 import storage as st
+from tqdm import tqdm
 
 
 def fetch_latest_videotitles(channel_name="",series_regex=""):
@@ -19,7 +20,7 @@ def fetch_latest_videotitles(channel_name="",series_regex=""):
         #check channel - series pair
         to_fetch = { series_regex : channel_name }
 
-    for s_name,c_name in to_fetch.items():
+    for s_name,c_name in tqdm(to_fetch.items()):
 
         #fetch latest episodes
         url = url_videos.replace("<channel>",c_name)

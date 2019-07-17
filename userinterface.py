@@ -12,5 +12,3 @@ def print_pairs():
     print("")
     print("CHANNEL - SERIES CONFIGURATIONS:")
     print(tab(st.open_series(),headers="keys", tablefmt="psql"))
-
-
