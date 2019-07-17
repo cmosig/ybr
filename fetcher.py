@@ -5,26 +5,24 @@ import pandas as pd
 import storage as st
 from tqdm import tqdm
 
+channel_cache = {}
 
 def fetch_latest_videotitles(channel_name="",series_regex=""):
-    url_videos = "https://www.youtube.com/user/<channel>/videos"
     url_yt = "https://www.youtube.com"
     
     if (channel_name == ""):
         #check entire series list
-        to_fetch = st.get_series_asdict()
+        to_fetch = st.get_series_as_tuples()
     elif (series_regex == ""):
         #check only of specific channel
         print("TODO")
     else:
         #check channel - series pair
-        to_fetch = { series_regex : channel_name }
+        to_fetch = [(series_regex , channel_name)]
 
-    for s_name,c_name in tqdm(to_fetch.items()):
-
+    for s_name,c_name in tqdm(to_fetch):
         #fetch latest episodes
-        url = url_videos.replace("<channel>",c_name)
-        channel_bs = BeautifulSoup(urllib.request.urlopen(url),"html.parser")
+        channel_bs = get_channel_bs(c_name)
         video_elements = channel_bs.findAll("a", {"class":"yt-uix-sessionlink yt-uix-tile-link spf-link yt-ui-ellipsis yt-ui-ellipsis-2"})
         video_titles = list(map(get_title,video_elements))
         video_urls = list(map(get_url,video_elements))
@@ -49,6 +47,14 @@ def fetch_latest_videotitles(channel_name="",series_regex=""):
                 break
             else:
                 st.add_new_episode(videos[i][0],url_yt + videos[i][1])
+
+def get_channel_bs(channel_name):
+    #lookup in cache
+    if (not channel_name in channel_cache):
+        url_videos = "https://www.youtube.com/user/<channel>/videos"
+        url = url_videos.replace("<channel>",channel_name)
+        channel_cache[channel_name] = BeautifulSoup(urllib.request.urlopen(url),"html.parser")
+    return channel_cache[channel_name]
     
 
 def get_title(element):

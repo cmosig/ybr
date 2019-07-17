@@ -72,11 +72,17 @@ def add_new_episode(episode_name,url=""):
     nel.write(episode_name + ";" + url + "\n")
     nel.close()
 
+def get_series_as_tuples():
+    ser = open_series().drop(columns=["latest_watched"])
+    return [tuple(x) for x in ser.values]
 
+"""
+#does not work since series is no id
 def get_series_asdict():
     ser = open_series()
     #ser = ser.drop(["latest_watched"],axis=1)
     return pd.Series(ser["channel_name"].values,index=ser["series_name"]).to_dict()
+"""
 
 def get_channels_aslist():
     return open_channels()["channel_name"].tolist()
