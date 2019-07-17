@@ -3,8 +3,8 @@ import traceback
 from os import path
 import pandas as pd
 
-#data_path = "/home/hacker101/projects/ybr/data/"
-data_path = "/usr/share/ybr/"
+data_path = "/home/hacker101/ybr/"
+#data_path = "/usr/local/share/ybr/"
 
 def init_database():
     try:
