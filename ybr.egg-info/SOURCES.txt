@@ -1,6 +1,8 @@
+README.md
 setup.py
 ybr.egg-info/PKG-INFO
 ybr.egg-info/SOURCES.txt
 ybr.egg-info/dependency_links.txt
 ybr.egg-info/entry_points.txt
+ybr.egg-info/requires.txt
 ybr.egg-info/top_level.txt
