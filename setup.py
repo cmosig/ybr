@@ -1,7 +1,7 @@
 from setuptools import setup
 setup(
     name='ybr',
-    version='0.3',
+    version='0.4',
     install_requires=[
         'bs4',
         'pandas',

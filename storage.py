@@ -3,21 +3,22 @@ import traceback
 from os import path
 import pandas as pd
 
-data_path = "/home/hacker101/projects/ybr/data/"
+#data_path = "/home/hacker101/projects/ybr/data/"
+data_path = "/usr/share/ybr/"
 
 def init_database():
     try:
         os.mkdir(data_path)
     except:
-        pass
+        traceback.print_exc()
     if (path.exists(data_path + "new_episodes_list.csv") and path.exists(data_path + "series.csv")):
         print("database files already exist")
     else:
         f = open(data_path + "new_episodes_list.csv","w+")
-        f.write("episode_name ; url \n")
+        f.write("episode_name;url\n")
         f.close
         h = open(data_path + "series.csv","w+")
-        h.write("series_name ; channel_name ; latest_watched\n")
+        h.write("series_name;channel_name;latest_watched\n")
         h.close
 
 def open_nel():
