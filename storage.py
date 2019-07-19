@@ -35,6 +35,9 @@ def close_series(df):
 def close_nel(df):
     df.drop_duplicates().to_csv(data_path + "new_episodes_list.csv",sep=";",header=["episode_name","url"],index=False)
 
+def empty_nel():
+    close_nel(pd.DataFrame(columns=["episode_name","url"]))
+
 """
 def get_series_aslist():
     return open_series()["series_name"].tolist()

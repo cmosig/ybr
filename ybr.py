@@ -20,6 +20,7 @@ def init_argument_parser():
     parser.add_argument("-l","--print_pairs",action="store_const",const=us.print_pairs,dest="print_pairs",help="prints all channel-series pairs, which have been added")
     parser.add_argument("-n","--nel_index",const="nel_index",nargs="?",default=0,help="specifying an entry from the nel table by index")
     parser.add_argument("-r","--remove_nel_entry",action="store_const",const=st.remove_nel,dest="remove_nel",help="removes an nel entry")
+    parser.add_argument("--empty_nel",action="store_const",const=st.empty_nel,dest="empty_nel",help="empties entire new episode list")
     args = parser.parse_args()
     #print(args) #printing namespace
 
