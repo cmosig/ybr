@@ -13,6 +13,7 @@ def init_argument_parser():
     parser.add_argument("-f","--fetch",action="store_const",const=f.fetch_latest_videotitles,dest="fetch",help="fetch latest videos")
     parser.add_argument("-s","--series",const="series",help="specify series to work on",nargs="?",default="")
     parser.add_argument("-c","--channel",const="channel",help="specify channel to work on",nargs="?",default="")
+    parser.add_argument("-e","--episode",const="episode",help="specify episode to work on",nargs="?",default="")
     parser.add_argument("--initDB",action="store_const",const=st.init_database,dest="initDB",help="initial init of database. does nothing later")
     parser.add_argument("--add-series",action="store_const",const=st.add_series,dest="add_series",help="adds series-channel pair to database, requires both to be specified")
     parser.add_argument("--remove-series",action="store_const",const=st.remove_series,dest="remove_series",help="removes series-channel pair to database, requires both to be specified")
@@ -21,6 +22,7 @@ def init_argument_parser():
     parser.add_argument("-n","--nel_index",const="nel_index",nargs="?",default=0,help="specifying an entry from the nel table by index")
     parser.add_argument("-r","--remove_nel_entry",action="store_const",const=st.remove_nel,dest="remove_nel",help="removes an nel entry")
     parser.add_argument("--empty_nel",action="store_const",const=st.empty_nel,dest="empty_nel",help="empties entire new episode list")
+    parser.add_argument("--set_latest_episode",action="store_const",const=st.set_latest,dest="set_latest",help="sets the latest episode for a given series-channel pair")
     args = parser.parse_args()
     #print(args) #printing namespace
 
@@ -33,6 +35,8 @@ def init_argument_parser():
                 value(args.series,args.channel)
             elif (key =="remove_nel"):
                 value(int(args.nel_index))
+            elif (key =="set_latest"):
+                value(args.episode,args.series,args.channel)
             else:
                 value()
 

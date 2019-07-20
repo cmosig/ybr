@@ -50,6 +50,8 @@ def remove_nel(index):
 
 def set_latest(latest,series,channel):
     """sets the latest episode of a series-channel pair"""
+    if (latest == "" or series == "" or channel == ""):
+        print("Setting the latest episode requires: episode,series and channel")
     ser = open_series()
     #locating channel-series pair in dataframe and replacing latest watched episode
     ser.loc[(ser["series_name"]==series) & (ser["channel_name"]==channel),"latest_watched"] = latest
